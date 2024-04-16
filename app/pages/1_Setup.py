@@ -1,9 +1,13 @@
 import streamlit as st
 
 from utils.google import generate
+from utils.polling import ingest_polling_spreadsheet
+
+st.session_state["polling_data"] = ""
+st.session_state["output"] = ""
 
 with st.form(key="setup-form"):
-    uploaded_files = st.file_uploader("Upload polling data spreadsheet", accept_multiple_files=True)
+    uploaded_file = st.file_uploader("Upload polling data spreadsheet", accept_multiple_files=False)
 
     policy_brief = st.text_input("Provide the policy brief")
 
@@ -14,5 +18,5 @@ with st.form(key="setup-form"):
     if submitted:
         st.session_state.policy_brief = policy_brief
         st.session_state.other_issues = other_issues
-        st.session_state.polling_data = uploaded_files
-        st.session_state.output = generate()
+        st.session_state.polling_data = ingest_polling_spreadsheet(uploaded_file)
+        st.session_state.output = generate(prompt=f"""This is an extract from a csv containing opinion poll data. Summarise it: {st.session_state.polling_data}""")
