@@ -1,5 +1,7 @@
 import streamlit as st
 
+from utils.google import generate
+
 with st.form(key="setup-form"):
     uploaded_files = st.file_uploader("Upload polling data spreadsheet", accept_multiple_files=True)
 
@@ -13,3 +15,4 @@ with st.form(key="setup-form"):
         st.session_state.policy_brief = policy_brief
         st.session_state.other_issues = other_issues
         st.session_state.polling_data = uploaded_files
+        st.session_state.output = generate()
