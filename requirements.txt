@@ -1,4 +1,4 @@
 streamlit
 langchain
-boto3
-newscatcherapi
+python-dotenv
+langchain-google-vertexai
