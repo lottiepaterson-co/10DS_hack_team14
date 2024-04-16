@@ -7,11 +7,11 @@ st.session_state.summary_form_expanded = True
 
 form_expander = st.expander(label="Upload Data", expanded=st.session_state.summary_form_expanded)
 
-with form_expander:
+with st.sidebar:
     with st.form(key="summary-form", border=False):
         uploaded_file = st.file_uploader("Polling Data (.xlsx)", accept_multiple_files=False)
 
-        submitted = st.form_submit_button("Summarise it for me")
+        submitted = st.form_submit_button("Go!")
 
         if submitted:
             polling_data = ingest_polling_spreadsheet(uploaded_file)
