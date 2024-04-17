@@ -1,22 +1,35 @@
 import streamlit as st
+
+from docx import Document
+
 from utils.google import generate
 from utils.polling import ingest_polling_spreadsheet
 
-st.session_state.output = ""
-st.session_state.form_expanded = True
+st.session_state.output = """
+# Understanding Likely Public Reactions to a Policy Announcement
 
-form_expander = st.expander(label="Upload Data", expanded=st.session_state.form_expanded)
+Combine a policy announcement, or briefing material, with polling data of your choice to understand how different demographics and interest groups may react.
 
-with form_expander:
-    with st.form(key="crosscut-form", border=False):
-        uploaded_file = st.file_uploader("Polling Data (.xlsx)", accept_multiple_files=False)
+:point_left: Get started!
+"""
+st.session_state.polling_spreadsheet = None
+st.session_state.policy_detail = None
 
-        policy_brief = st.text_input("Provide the policy brief")
+with st.sidebar:
+    with st.form(key="policy-form", border=False):
+        st.session_state.polling_spreadsheet = st.file_uploader("Polling Data (.xlsx)")
+
+        st.session_state.policy_detail = st.text_area("Paste the text of the policy announcement here")
 
         submitted = st.form_submit_button("Go!")
 
         if submitted:
-            polling_data = ingest_polling_spreadsheet(uploaded_file)
+            if (st.session_state.polling_spreadsheet is None) or (st.session_state.policy_detail is None):
+                st.warning("You must provide both a spreadsheet of polling data, and a policy announcement")
+                st.stop()
+            polling_data = ingest_polling_spreadsheet(st.session_state.polling_spreadsheet)
+            policy_brief = st.session_state.policy_detail
+
             prompt_template = f"""
                 You are a communications adviser: your role is to prepare the Prime Minister for an upcoming appearance where they will brief the media on a policy announcement.
                 Only use information presented in this prompt, citing specific statistics by demographic. Do not provide recommendations or messaging strategies, and ensure your output is relevant to the policy brief.
@@ -29,6 +42,5 @@ with form_expander:
             st.session_state.output = generate(prompt_template)
             st.session_state.form_expanded = False
     
-
 st.markdown(st.session_state.output)
 

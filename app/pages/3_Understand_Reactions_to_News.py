@@ -3,12 +3,15 @@ from utils.google import generate
 from utils.news import get_national_news_headlines
 from utils.polling import ingest_polling_spreadsheet
 
-st.session_state.output = ""
-st.session_state.form_expanded = True
+st.session_state.output = """
+# Understanding Likely Public Reactions to News Stories
 
-form_expander = st.expander(label="Upload Data", expanded=st.session_state.form_expanded)
+Combine top news stories from the last 1h or 24h with polling data of your choice to understand how different demographics and interest groups may react.
 
-with form_expander:
+:point_left: Get started!
+"""
+
+with st.sidebar:
     with st.form(key="news-form", border=False):
         uploaded_file = st.file_uploader("Polling Data (.xlsx)", accept_multiple_files=False)
 
@@ -30,8 +33,6 @@ with form_expander:
                 Using only the provided opinion poll data and news articles, explain how different demographics are likely to react to specific news articles, ensuring you cite the article title and source.
                 """
             st.session_state.output = generate(prompt_template)
-            st.session_state.form_expanded = False
-    
 
 st.markdown(st.session_state.output)
 
