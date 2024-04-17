@@ -2,7 +2,13 @@ import streamlit as st
 from utils.google import generate
 from utils.polling import ingest_polling_spreadsheet
 
-st.session_state.generic_summary = ""
+st.session_state.generic_summary ="""
+# Understanding Polling Data
+
+Get a summary of polling data of your choice to understand the differences between different demographics and interest groups.
+
+:point_left: Get started!
+"""
 st.session_state.summary_form_expanded = True
 
 form_expander = st.expander(label="Upload Data", expanded=st.session_state.summary_form_expanded)

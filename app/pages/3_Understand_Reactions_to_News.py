@@ -3,7 +3,13 @@ from utils.google import generate
 from utils.news import get_national_news_headlines
 from utils.polling import ingest_polling_spreadsheet
 
-st.session_state.output = ""
+st.session_state.output = """
+# Understanding Likely Public Reactions to News Stories
+
+Combine top news stories from the last 1h or 24h with polling data of your choice to understand how different demographics and interest groups may react.
+
+:point_left: Get started!
+"""
 
 with st.sidebar:
     with st.form(key="news-form", border=False):

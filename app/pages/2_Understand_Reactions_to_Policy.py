@@ -5,7 +5,13 @@ from docx import Document
 from utils.google import generate
 from utils.polling import ingest_polling_spreadsheet
 
-st.session_state.output = ""
+st.session_state.output = """
+# Understanding Likely Public Reactions to a Policy Announcement
+
+Combine a policy announcement, or briefing material, with polling data of your choice to understand how different demographics and interest groups may react.
+
+:point_left: Get started!
+"""
 st.session_state.polling_spreadsheet = None
 st.session_state.policy_detail = None
 
